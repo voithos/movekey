@@ -24,5 +24,4 @@ yy    duplicate current tab
 i     focus the first input element on the page
 ```
 
-Install it from the Chrome store at
-<TODO>
+Install it from the Chrome store at https://chrome.google.com/webstore/detail/movekey/lkgkefpiaigjibggnoneblbnmefgecda.

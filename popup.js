@@ -147,6 +147,7 @@ function saveFilters() {
       mutates.push({id : Number(el.dataset.filterId), filter : el.value});
     } else {
       maxId++;
+      el.dataset.filterId = maxId;
       adds.push({id : maxId, filter : el.value});
     }
   }

@@ -2,14 +2,94 @@
 <html>
   <head>
     <style>
+      h2 {
+        margin: 0.5em 0;
+      }
+
       .saved .unsaved {
         display: none;
+      }
+
+      .filters {
+        margin: 0.5em;
+        margin-bottom: 1em;
+        min-width: 31em;
+      }
+
+      .filter-container {
+        display: flex;
+        justify-content: center;
+      }
+
+      .filter {
+        width: 25em;
+        border: none;
+        border-bottom: 2px solid #2196f3;
+        outline: 0;
+        margin-bottom: -1px;
+        color: rgba(0,0,0,.87);
+        transition: all .2s ease-in-out;
+      }
+
+      .filter.mismatch {
+        border-color: #f44336;
+      }
+
+      button {
+        color: #000;
+        background-color: #fff;
+        background: #fff radial-gradient(circle, transparent 1%, #fff 1%) center/15000%;
+        outline: 0;
+        cursor: pointer;
+        border: none;
+        border-radius: 2px;
+        box-shadow: 0 0 2px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.2);
+        padding: 0 1.5em;
+        height: 2em;
+        transition: all .2s ease-in-out, background 0.8s;
+        background-position: center;
+      }
+      button:active {
+        background-color: #dfdfdf;
+        background-size: 100%;
+        transition: background 0s;
+      }
+      button:disabled {
+        cursor: not-allowed;
+        opacity: .6;
+        box-shadow: none;
+      }
+
+      .delete-button {
+        color: #fff;
+        width: 1.5em;
+        height: 1.5em;
+        line-height: 1.5em;
+        margin-left: 0.5em;
+        border-radius: 50%;
+        padding: 0;
+        background: #f55a4e radial-gradient(circle, transparent 1%, #f55a4e 1%) center/15000%;
+      }
+      .delete-button:active {
+        background-color: #f88d86;
+        background-size: 100%;
+        transition: background 0s;
+      }
+
+      .save {
+        color: #fff;
+        background: #2196F3 radial-gradient(circle, transparent 1%, #2196F3 1%) center/15000%;
+      }
+      .save:active {
+        background-color: #79c0f8;
+        background-size: 100%;
+        transition: background 0s;
       }
     </style>
   </head>
   <body>
     <section class="blacklist">
-      <h1>Blacklist<span class="unsaved"> (unsaved)</span></h1>
+      <h2>Blacklist<span class="unsaved"> (unsaved)</span></h2>
       <div class="filters"></div>
       <div>
         <button class="set-page">Page</button>

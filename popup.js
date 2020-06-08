@@ -103,6 +103,7 @@ function newFilter(item) {
   deleteEl.addEventListener('click', () => deleteFilter(inputEl));
 
   const containerEl = document.createElement('div');
+  containerEl.classList.add('filter-container');
   containerEl.appendChild(inputEl);
   containerEl.appendChild(deleteEl);
   targetEl.appendChild(containerEl);

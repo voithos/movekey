@@ -1,3 +1,8 @@
+chrome.runtime.onInstalled.addListener(() => {
+  // Initialize the blacklist.
+  chrome.storage.sync.set({'blacklist' : []});
+});
+
 // Simply listen for events and respond.
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (!sender.tab) {

@@ -2,7 +2,7 @@
   "name": "movekey",
   "version": "1.0",
   "description": "Simple keyboard based movement.",
-  "permissions": [],
+  "permissions": ["storage", "tabs"],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
@@ -11,6 +11,9 @@
     "matches": ["<all_urls>"],
     "js": ["movekey.js"]
   }],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
   "icons": {
     "16": "images/movekey16.png",
     "32": "images/movekey32.png",

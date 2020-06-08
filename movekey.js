@@ -219,9 +219,44 @@ function keydown(event) {
   event.preventDefault();
 }
 
+/** Whether or not the extensions is currently listening for keystrokes. */
+let listening = false;
+
 /** Starts movekey. */
 function movekey() {
-  document.addEventListener('keydown', keydown, /* capture */ true);
+  // Initial query for blacklist.
+  chrome.storage.sync.get('blacklist', (res) => {
+    const blacklist = res['blacklist'] || [];
+    for (let item of blacklist) {
+      const r = new RegExp(item.filter);
+      if (r.test(location.href)) {
+        // Blacklisted; don't add the listener.
+        return;
+      }
+    }
+    // If we make it this far, then the page hasn't been blacklisted.
+    setListening(true);
+  });
+
+  // Set up listener for updates.
+  chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+    if ('disable' in req) {
+      setListening(!req.disable);
+    }
+  });
+}
+
+/** Sets the listening states and registers event handlers. */
+function setListening(listen) {
+  // Check whether we need to do anything.
+  if (listen !== listening) {
+    if (listen) {
+      document.addEventListener('keydown', keydown, /* capture */ true);
+    } else {
+      document.removeEventListener('keydown', keydown, /* capture */ true);
+    }
+    listening = listen;
+  }
 }
 
 movekey();

@@ -152,11 +152,12 @@ function saveFilters() {
     }
   }
 
-  commit({deletes : [], adds : adds, mutates : mutates});
+  commit({deletes : [], adds : adds, mutates : mutates},
+         () => { window.close(); });
 }
 
 /** Saves a set of filter operations. */
-function commit(operations) {
+function commit(operations, fn) {
   chrome.storage.sync.get('blacklist', (res) => {
     const blacklist = res['blacklist'] || [];
 
@@ -184,6 +185,9 @@ function commit(operations) {
       setSaved(true);
       maybeDisableSave();
       updateContentScript(blacklist);
+      if (fn) {
+        fn();
+      }
     });
   });
 }
@@ -192,7 +196,12 @@ function commit(operations) {
 function deleteFilter(inputEl) {
   const deleteIds = [ Number(inputEl.dataset.filterId) ];
   inputEl.parentNode.remove();
-  commit({deletes : deleteIds, adds : [], mutates : []});
+  commit({deletes : deleteIds, adds : [], mutates : []}, () => {
+    const noFilters = document.querySelectorAll('.filter').length === 0;
+    if (noFilters) {
+      window.close();
+    }
+  });
 }
 
 function updateContentScript(blacklist) {

@@ -118,8 +118,15 @@ function escape(str) {
 function checkMatch(e) {
   const filter = e.target.value;
 
-  const r = new RegExp(filter);
-  if (!r.test(url)) {
+  let success = false;
+  try {
+    const r = new RegExp(filter);
+    success = r.test(url);
+  } catch {
+    // Regex was malformed.
+  }
+
+  if (!success) {
     e.target.classList.add('mismatch');
   } else {
     e.target.classList.remove('mismatch');

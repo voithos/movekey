@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(() => {
-  // Initialize the blacklist.
-  chrome.storage.sync.set({'blacklist' : []});
+  // Initialize the disablelist.
+  chrome.storage.sync.set({'disablelist' : []});
 });
 
 // Simply listen for events and respond.

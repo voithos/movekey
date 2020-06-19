@@ -17,15 +17,15 @@ function init() {
   document.querySelector('.save').addEventListener('click',
                                                    () => saveFilters());
 
-  chrome.storage.sync.get('blacklist', (res) => {
-    const blacklist = res['blacklist'] || [];
+  chrome.storage.sync.get('disablelist', (res) => {
+    const disablelist = res['disablelist'] || [];
 
     chrome.tabs.query({active : true, currentWindow : true}, (tabs) => {
       tabId = tabs[0].id;
       url = tabs[0].url;
 
       const matching = [];
-      for (let item of blacklist) {
+      for (let item of disablelist) {
         maxId = Math.max(maxId, item.id);
 
         // Gather existing matches.
@@ -72,7 +72,7 @@ function setFirst(filter) {
 /** Sets the saved state and performs needed updates. */
 function setSaved(s) {
   saved = s;
-  const el = document.querySelector('.blacklist');
+  const el = document.querySelector('.disablelist');
   if (saved) {
     el.classList.add('saved');
   } else {
@@ -165,33 +165,33 @@ function saveFilters() {
 
 /** Saves a set of filter operations. */
 function commit(operations, fn) {
-  chrome.storage.sync.get('blacklist', (res) => {
-    const blacklist = res['blacklist'] || [];
+  chrome.storage.sync.get('disablelist', (res) => {
+    const disablelist = res['disablelist'] || [];
 
     for (let deleteId of operations.deletes) {
-      let i = blacklist.length;
+      let i = disablelist.length;
       // Iterate in reverse so as to not break when splicing.
       while (i--) {
-        if (blacklist[i].id === deleteId) {
-          blacklist.splice(i, 1);
+        if (disablelist[i].id === deleteId) {
+          disablelist.splice(i, 1);
         }
       }
     }
 
     for (let mutate of operations.mutates) {
-      for (let item of blacklist) {
+      for (let item of disablelist) {
         if (mutate.id === item.id) {
           item.filter = mutate.filter;
         }
       }
     }
 
-    blacklist.push(...operations.adds);
+    disablelist.push(...operations.adds);
 
-    chrome.storage.sync.set({'blacklist' : blacklist}, () => {
+    chrome.storage.sync.set({'disablelist' : disablelist}, () => {
       setSaved(true);
       maybeDisableSave();
-      updateContentScript(blacklist);
+      updateContentScript(disablelist);
       if (fn) {
         fn();
       }
@@ -211,9 +211,9 @@ function deleteFilter(inputEl) {
   });
 }
 
-function updateContentScript(blacklist) {
+function updateContentScript(disablelist) {
   let disable = false;
-  for (let item of blacklist) {
+  for (let item of disablelist) {
     const r = new RegExp(item.filter);
     if (r.test(url)) {
       disable = true;

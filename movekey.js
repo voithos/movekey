@@ -224,17 +224,17 @@ let listening = false;
 
 /** Starts movekey. */
 function movekey() {
-  // Initial query for blacklist.
-  chrome.storage.sync.get('blacklist', (res) => {
-    const blacklist = res['blacklist'] || [];
-    for (let item of blacklist) {
+  // Initial query for disablelist.
+  chrome.storage.sync.get('disablelist', (res) => {
+    const disablelist = res['disablelist'] || [];
+    for (let item of disablelist) {
       const r = new RegExp(item.filter);
       if (r.test(location.href)) {
-        // Blacklisted; don't add the listener.
+        // Disabled; don't add the listener.
         return;
       }
     }
-    // If we make it this far, then the page hasn't been blacklisted.
+    // If we make it this far, then the page hasn't been disabled.
     setListening(true);
   });
 

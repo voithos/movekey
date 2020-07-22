@@ -1,6 +1,10 @@
 chrome.runtime.onInstalled.addListener(() => {
   // Initialize the disablelist.
-  chrome.storage.sync.set({'disablelist' : []});
+  chrome.storage.sync.get('disablelist', (res) => {
+    if (!res['disablelist'] || chrome.runtime.lastError) {
+      chrome.storage.sync.set({'disablelist' : []});
+    }
+  });
 });
 
 // Simply listen for events and respond.
